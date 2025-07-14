@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:13
+    container_name: inventory_db
+    environment:
+      POSTGRES_USER: user_inventory
+      POSTGRES_PASSWORD: password_inventory
+      POSTGRES_DB: inventory_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    networks:
+      - inventory_net
+
+volumes:
+  db_data:
+    driver: local
+
+networks:
+  inventory_net:
+    driver: bridge
