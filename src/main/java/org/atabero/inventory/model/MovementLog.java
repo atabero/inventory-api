@@ -1,6 +1,6 @@
 package org.atabero.inventory.model;
 
-import jakarta.persistence.*; // Asegúrate de que usas jakarta.persistence si es Spring Boot 3.x
+import jakarta.persistence.*;
 import lombok.*;
 import org.atabero.inventory.model.enums.MovementStatus;
 import org.atabero.inventory.model.enums.MovementType;
