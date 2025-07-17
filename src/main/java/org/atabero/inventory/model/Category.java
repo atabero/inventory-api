@@ -1,10 +1,7 @@
 package org.atabero.inventory.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.atabero.inventory.model.enums.CategoryStatus;
 
 import java.io.Serial;
@@ -17,6 +14,7 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Table(name = "categories")
 public class Category implements Serializable {
 

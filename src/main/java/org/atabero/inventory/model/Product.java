@@ -1,10 +1,7 @@
 package org.atabero.inventory.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.atabero.inventory.model.enums.ProductStatus;
 
 import java.io.Serial;
@@ -20,6 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "products")
+@Builder
 public class Product implements Serializable {
 
     @Serial
