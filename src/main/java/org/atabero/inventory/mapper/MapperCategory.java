@@ -4,6 +4,7 @@ import org.atabero.inventory.dto.category.CategoryResponseDTO;
 import org.atabero.inventory.dto.category.CreateCategoryDTO;
 import org.atabero.inventory.dto.category.UpdateCategoryDTO;
 import org.atabero.inventory.model.Category;
+import org.atabero.inventory.model.enums.CategoryStatus;
 
 import java.util.Objects;
 
@@ -39,6 +40,7 @@ public class MapperCategory {
         return Category.builder()
                 .name(dto.getName())
                 .description(description)
+                .status(CategoryStatus.ACTIVE)
                 .build();
     }
 
