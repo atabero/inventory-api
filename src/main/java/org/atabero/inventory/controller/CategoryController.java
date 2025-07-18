@@ -7,7 +7,6 @@ import org.atabero.inventory.dto.category.CategoryResponseDTO;
 import org.atabero.inventory.dto.category.CreateCategoryDTO;
 import org.atabero.inventory.dto.category.UpdateCategoryDTO;
 import org.atabero.inventory.service.CategoryService;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -55,6 +54,12 @@ public class CategoryController {
     public ResponseEntity<Void> desactivate(@PathVariable Long idCategory){
         categoryService.deactivate(idCategory);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/activate/{idCategory}")
+    public ResponseEntity<Void> activated(@PathVariable Long idCategory) {
+        categoryService.activate(idCategory);
+        return ResponseEntity.ok().build();
     }
 
 }

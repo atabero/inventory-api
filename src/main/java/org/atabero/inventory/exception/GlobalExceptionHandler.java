@@ -58,6 +58,17 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(apiError.getStatus()).body(apiError);
     }
 
+    @ExceptionHandler(CategoryAlreadyActivatedException.class)
+    public ResponseEntity<ApiError> handleCategoryAlreadyActivated(CategoryAlreadyActivatedException ex, HttpServletRequest request){
+        ApiError apiError = createApiError(
+                HttpStatus.CONFLICT,
+                "La categoría ya está activada",
+                ex.getMessage(),
+                request
+        );
+        return ResponseEntity.status(apiError.getStatus()).body(apiError);
+    }
+
 
     private ApiError createApiError(HttpStatus status, String error, String message, HttpServletRequest request) {
         return new ApiError(

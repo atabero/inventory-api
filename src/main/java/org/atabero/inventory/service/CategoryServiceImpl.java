@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.atabero.inventory.dto.category.CategoryResponseDTO;
 import org.atabero.inventory.dto.category.CreateCategoryDTO;
 import org.atabero.inventory.dto.category.UpdateCategoryDTO;
+import org.atabero.inventory.exception.CategoryAlreadyActivatedException;
 import org.atabero.inventory.exception.CategoryAlreadyDeactivatedException;
 import org.atabero.inventory.exception.CategoryNotFoundException;
 import org.atabero.inventory.mapper.MapperCategory;
@@ -58,6 +59,16 @@ public class CategoryServiceImpl implements CategoryService {
             throw new CategoryAlreadyDeactivatedException(id);
         }
         category.setStatus(CategoryStatus.INACTIVE);
+        categoryRepository.save(category);
+    }
+
+    @Override
+    public void activate(Long id) {
+        Category category = findByIdFull(id);
+        if (category.getStatus() == CategoryStatus.ACTIVE) {
+            throw new CategoryAlreadyActivatedException(id);
+        }
+        category.setStatus(CategoryStatus.ACTIVE);
         categoryRepository.save(category);
     }
 

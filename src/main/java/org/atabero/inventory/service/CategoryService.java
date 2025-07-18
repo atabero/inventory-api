@@ -49,4 +49,6 @@ public interface CategoryService {
      * @param id identificador de la categoría
      */
     void deactivate(Long id);
+
+    void activate(Long id);
 }
