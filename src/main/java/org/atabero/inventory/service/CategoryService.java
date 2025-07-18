@@ -41,7 +41,7 @@ public interface CategoryService {
      * @param dto datos de actualización
      * @return DTO actualizado
      */
-    CategoryResponseDTO update(UpdateCategoryDTO dto);
+    CategoryResponseDTO update(Long id, UpdateCategoryDTO dto);
 
     /**
      * Desactiva (soft delete) una categoría por su ID.

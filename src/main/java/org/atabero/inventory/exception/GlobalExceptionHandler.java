@@ -47,6 +47,17 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(apiError.getStatus()).body(apiError);
     }
 
+    @ExceptionHandler(CategoryAlreadyDeactivatedException.class)
+    public ResponseEntity<ApiError> handleCategoryAlreadyDeactivated(CategoryAlreadyDeactivatedException ex, HttpServletRequest request){
+        ApiError apiError = createApiError(
+                HttpStatus.CONFLICT,
+                "La categoría ya está desactivada",
+                ex.getMessage(),
+                request
+        );
+        return ResponseEntity.status(apiError.getStatus()).body(apiError);
+    }
+
 
     private ApiError createApiError(HttpStatus status, String error, String message, HttpServletRequest request) {
         return new ApiError(
