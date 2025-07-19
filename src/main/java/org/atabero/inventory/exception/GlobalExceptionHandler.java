@@ -69,6 +69,34 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(apiError.getStatus()).body(apiError);
     }
 
+    @ExceptionHandler(SupplierNotFoundException.class)
+    public ResponseEntity<ApiError> handleSupplierNotFound(SupplierNotFoundException ex, HttpServletRequest request) {
+        ApiError apiError = createApiError(HttpStatus.NOT_FOUND, "Proveedor no encontrado", ex.getMessage(), request);
+        return ResponseEntity.status(apiError.getStatus()).body(apiError);
+    }
+
+    @ExceptionHandler(SupplierAlreadyDeactivatedException.class)
+    public ResponseEntity<ApiError> handleSupplierAlreadyDeactivated(SupplierAlreadyDeactivatedException ex, HttpServletRequest request) {
+        ApiError apiError = createApiError(
+                HttpStatus.CONFLICT,
+                "El proveedor ya está desactivado",
+                ex.getMessage(),
+                request
+        );
+        return ResponseEntity.status(apiError.getStatus()).body(apiError);
+    }
+
+    @ExceptionHandler(SupplierAlreadyActivatedException.class)
+    public ResponseEntity<ApiError> handleSupplierAlreadyActivated(SupplierAlreadyActivatedException ex, HttpServletRequest request) {
+        ApiError apiError = createApiError(
+                HttpStatus.CONFLICT,
+                "El proveedor ya está activado",
+                ex.getMessage(),
+                request
+        );
+        return ResponseEntity.status(apiError.getStatus()).body(apiError);
+    }
+
 
     private ApiError createApiError(HttpStatus status, String error, String message, HttpServletRequest request) {
         return new ApiError(

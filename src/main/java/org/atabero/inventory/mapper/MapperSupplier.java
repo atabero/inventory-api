@@ -4,6 +4,7 @@ import org.atabero.inventory.dto.supplier.CreateSupplierDTO;
 import org.atabero.inventory.dto.supplier.SupplierResponseDTO;
 import org.atabero.inventory.dto.supplier.UpdateSupplierDTO;
 import org.atabero.inventory.model.Supplier;
+import org.atabero.inventory.model.enums.SupplierStatus;
 
 import java.util.Objects;
 
@@ -38,6 +39,7 @@ public class MapperSupplier {
         return Supplier.builder()
                 .name(dto.getName())
                 .contactInfo(contactInfo)
+                .status(SupplierStatus.ACTIVE)
                 .build();
     }
 
@@ -61,7 +63,7 @@ public class MapperSupplier {
      * @param dto      el DTO con los datos actualizados
      * @param supplier la entidad de proveedor a modificar
      */
-    public static void UpdateSupplier(UpdateSupplierDTO dto, Supplier supplier) {
+    public static void updateSupplier(UpdateSupplierDTO dto, Supplier supplier) {
         if (dto.getName() != null && !Objects.equals(supplier.getName(), dto.getName())) {
             supplier.setName(dto.getName());
         }
