@@ -1,8 +1,8 @@
 package org.atabero.inventory.repository;
 
-import org.atabero.inventory.model.MovementLog;
+import org.atabero.inventory.model.StockMovement;
 import org.atabero.inventory.model.Product;
-import org.atabero.inventory.model.enums.MovementStatus;
+import org.atabero.inventory.model.enums.OperationStatus;
 import org.atabero.inventory.model.enums.MovementType;
 
 import org.springframework.data.domain.Page;
@@ -19,7 +19,7 @@ import java.util.UUID;
  * personalizadas sobre los registros de movimientos, incluyendo búsquedas por atributos directos,
  * por fechas y con soporte para paginación y ordenación.
  */
-public interface MovementLogRepository extends JpaRepository<MovementLog, UUID> {
+public interface StockMovementRepository extends JpaRepository<StockMovement, UUID> {
 
     // --- Búsquedas por Atributos Directos ---
 
@@ -29,7 +29,7 @@ public interface MovementLogRepository extends JpaRepository<MovementLog, UUID> 
      * @param product El producto relacionado con los movimientos.
      * @return Una lista de registros de movimiento asociados al producto.
      */
-    List<MovementLog> findByProduct(Product product);
+    List<StockMovement> findByProduct(Product product);
 
     /**
      * Busca los registros de movimiento por tipo de movimiento (ENTRY, SALE, etc.).
@@ -37,15 +37,15 @@ public interface MovementLogRepository extends JpaRepository<MovementLog, UUID> 
      * @param movementType El tipo de movimiento que se busca.
      * @return Una lista de registros de movimiento con el tipo especificado.
      */
-    List<MovementLog> findByMovementType(MovementType movementType);
+    List<StockMovement> findByMovementType(MovementType movementType);
 
     /**
      * Busca los registros de movimiento por estado (COMPLETED, FAILED, etc.).
      *
-     * @param movementStatus El estado del movimiento (por ejemplo, COMPLETED o FAILED).
+     * @param operationStatus El estado del movimiento (por ejemplo, COMPLETED o FAILED).
      * @return Una lista de registros de movimiento con el estado especificado.
      */
-    List<MovementLog> findByMovementStatus(MovementStatus movementStatus);
+    List<StockMovement> findByMovementStatus(OperationStatus operationStatus);
 
     /**
      * Busca los registros de movimiento cuyo campo de notas contenga una cadena dada,
@@ -54,7 +54,7 @@ public interface MovementLogRepository extends JpaRepository<MovementLog, UUID> 
      * @param notes La cadena que debe contener el campo de notas.
      * @return Una lista de registros de movimiento que contienen la cadena dada en las notas.
      */
-    List<MovementLog> findByNotesContainingIgnoreCase(String notes);
+    List<StockMovement> findByNotesContainingIgnoreCase(String notes);
 
     // --- Búsquedas por Fechas (Timestamp) ---
 
@@ -65,7 +65,7 @@ public interface MovementLogRepository extends JpaRepository<MovementLog, UUID> 
      * @param endDate La fecha final del rango.
      * @return Una lista de registros de movimiento que se encuentran dentro del rango de fechas.
      */
-    List<MovementLog> findByTimestampBetween(LocalDateTime startDate, LocalDateTime endDate);
+    List<StockMovement> findByTimestampBetween(LocalDateTime startDate, LocalDateTime endDate);
 
     /**
      * Busca los registros de movimiento ocurridos después de una fecha específica.
@@ -73,7 +73,7 @@ public interface MovementLogRepository extends JpaRepository<MovementLog, UUID> 
      * @param startDate La fecha de inicio para los movimientos que se buscan.
      * @return Una lista de registros de movimiento que ocurrieron después de la fecha indicada.
      */
-    List<MovementLog> findByTimestampAfter(LocalDateTime startDate);
+    List<StockMovement> findByTimestampAfter(LocalDateTime startDate);
 
     /**
      * Busca los registros de movimiento ocurridos antes de una fecha específica.
@@ -81,7 +81,7 @@ public interface MovementLogRepository extends JpaRepository<MovementLog, UUID> 
      * @param endDate La fecha final para los movimientos que se buscan.
      * @return Una lista de registros de movimiento que ocurrieron antes de la fecha indicada.
      */
-    List<MovementLog> findByTimestampBefore(LocalDateTime endDate);
+    List<StockMovement> findByTimestampBefore(LocalDateTime endDate);
 
     // --- Búsquedas Combinadas ---
 
@@ -92,7 +92,7 @@ public interface MovementLogRepository extends JpaRepository<MovementLog, UUID> 
      * @param movementType El tipo de movimiento (por ejemplo, ENTRY, SALE).
      * @return Una lista de registros de movimiento asociados al producto y tipo indicados.
      */
-    List<MovementLog> findByProductAndMovementType(Product product, MovementType movementType);
+    List<StockMovement> findByProductAndMovementType(Product product, MovementType movementType);
 
     /**
      * Busca los registros de movimiento de un producto específico dentro de un rango de fechas.
@@ -102,16 +102,16 @@ public interface MovementLogRepository extends JpaRepository<MovementLog, UUID> 
      * @param endDate La fecha final del rango.
      * @return Una lista de registros de movimiento asociados al producto y que se encuentran dentro del rango de fechas.
      */
-    List<MovementLog> findByProductAndTimestampBetween(Product product, LocalDateTime startDate, LocalDateTime endDate);
+    List<StockMovement> findByProductAndTimestampBetween(Product product, LocalDateTime startDate, LocalDateTime endDate);
 
     /**
      * Busca los registros de movimiento por tipo y estado.
      *
      * @param movementType El tipo de movimiento (ENTRY, SALE, etc.).
-     * @param movementStatus El estado del movimiento (COMPLETED, FAILED, etc.).
+     * @param operationStatus El estado del movimiento (COMPLETED, FAILED, etc.).
      * @return Una lista de registros de movimiento con el tipo y estado indicados.
      */
-    List<MovementLog> findByMovementTypeAndMovementStatus(MovementType movementType, MovementStatus movementStatus);
+    List<StockMovement> findByMovementTypeAndMovementStatus(MovementType movementType, OperationStatus operationStatus);
 
     // --- Paginación y Ordenación (Esenciales para Logs) ---
 
@@ -122,7 +122,7 @@ public interface MovementLogRepository extends JpaRepository<MovementLog, UUID> 
      * @param pageable El objeto que contiene los parámetros de paginación y ordenación.
      * @return Una página de registros de movimiento asociados al producto, con paginación y ordenación.
      */
-    Page<MovementLog> findByProduct(Product product, Pageable pageable);
+    Page<StockMovement> findByProduct(Product product, Pageable pageable);
 
     /**
      * Busca los registros de movimiento por tipo de movimiento, permitiendo paginación y ordenación.
@@ -131,7 +131,7 @@ public interface MovementLogRepository extends JpaRepository<MovementLog, UUID> 
      * @param pageable El objeto que contiene los parámetros de paginación y ordenación.
      * @return Una página de registros de movimiento con el tipo de movimiento especificado, con paginación y ordenación.
      */
-    Page<MovementLog> findByMovementType(MovementType movementType, Pageable pageable);
+    Page<StockMovement> findByMovementType(MovementType movementType, Pageable pageable);
 
     /**
      * Busca los registros de movimiento dentro de un rango de fechas, permitiendo paginación y ordenación.
@@ -141,7 +141,7 @@ public interface MovementLogRepository extends JpaRepository<MovementLog, UUID> 
      * @param pageable El objeto que contiene los parámetros de paginación y ordenación.
      * @return Una página de registros de movimiento que se encuentran dentro del rango de fechas, con paginación y ordenación.
      */
-    Page<MovementLog> findByTimestampBetween(LocalDateTime startDate, LocalDateTime endDate, Pageable pageable);
+    Page<StockMovement> findByTimestampBetween(LocalDateTime startDate, LocalDateTime endDate, Pageable pageable);
 
     /**
      * Realiza una búsqueda avanzada de registros de movimiento por producto, tipo de movimiento y rango de fechas,
@@ -154,7 +154,7 @@ public interface MovementLogRepository extends JpaRepository<MovementLog, UUID> 
      * @param pageable El objeto que contiene los parámetros de paginación y ordenación.
      * @return Una página de registros de movimiento que coinciden con los criterios, con paginación y ordenación.
      */
-    Page<MovementLog> findByProductAndMovementTypeAndTimestampBetween(
+    Page<StockMovement> findByProductAndMovementTypeAndTimestampBetween(
             Product product,
             MovementType movementType,
             LocalDateTime startDate,

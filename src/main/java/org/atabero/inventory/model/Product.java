@@ -57,7 +57,7 @@ public class Product implements Serializable {
     private Supplier supplier;
 
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
-    private List<MovementLog> movementLogs = new ArrayList<>();
+    private List<StockMovement> stockMovements = new ArrayList<>();
 
     @Column(name = "created_date", nullable = false, updatable = false)
     private LocalDateTime createdDate;

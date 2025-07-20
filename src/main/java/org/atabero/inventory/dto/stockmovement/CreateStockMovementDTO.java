@@ -1,4 +1,4 @@
-package org.atabero.inventory.dto.movementlog;
+package org.atabero.inventory.dto.stockmovement;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -10,7 +10,7 @@ import org.atabero.inventory.model.enums.MovementType;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreateMovementLogDTO {
+public class CreateStockMovementDTO {
 
     @NotNull(message = "El id del producto no puede estar vacío")
     private Long idProduct;
@@ -18,9 +18,6 @@ public class CreateMovementLogDTO {
     @NotNull(message = "La cantidad no puede estar vacía")
     @Min(value = 1, message = "La cantidad debe ser mayor que cero")
     private Integer amount;
-
-    @NotNull(message = "El tipo de movimiento no puede estar vacío")
-    private MovementType movementType;
 
     private String notes;
 }

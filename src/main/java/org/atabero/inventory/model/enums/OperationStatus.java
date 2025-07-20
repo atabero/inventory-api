@@ -1,6 +1,6 @@
 package org.atabero.inventory.model.enums;
 
-public enum MovementStatus {
+public enum OperationStatus {
 
     SUCCESS,
     ERROR;

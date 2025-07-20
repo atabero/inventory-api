@@ -2,7 +2,7 @@ package org.atabero.inventory.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.atabero.inventory.model.enums.MovementStatus;
+import org.atabero.inventory.model.enums.OperationStatus;
 import org.atabero.inventory.model.enums.MovementType;
 
 import java.io.Serial;
@@ -17,7 +17,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class MovementLog implements Serializable {
+public class StockMovement implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1;
@@ -39,7 +39,7 @@ public class MovementLog implements Serializable {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private MovementStatus movementStatus;
+    private OperationStatus operationStatus;
 
     @Column(nullable = false)
     private LocalDateTime timestamp;

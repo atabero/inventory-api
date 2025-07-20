@@ -14,7 +14,6 @@ public interface ProductService {
     ProductResponseDTO create(CreateProductDTO dto);
     List<ProductResponseDTO> create(List<CreateProductDTO> dtos);
     ProductResponseDTO update(Long id, UpdateProductDTO dto);
-    void deactivate(Long id);
-    void activate(Long id);
     Product getByIdFull(Long id);
+    void modifyStatus(Product product);
 }

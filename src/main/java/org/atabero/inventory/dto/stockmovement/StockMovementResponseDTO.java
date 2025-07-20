@@ -1,17 +1,18 @@
-package org.atabero.inventory.dto.movementlog;
+package org.atabero.inventory.dto.stockmovement;
 
-import org.atabero.inventory.model.enums.MovementStatus;
+import org.atabero.inventory.model.enums.OperationStatus;
 import org.atabero.inventory.model.enums.MovementType;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-public record MovementLogResponseDTO(
+public record StockMovementResponseDTO(
         UUID id,
-        UUID idProduct,
+        Long idProduct,
+        String productName,
         Integer quantityChange,
         MovementType movementType,
-        MovementStatus movementStatus,
+        OperationStatus operationStatus,
         LocalDateTime timestamp,
         String notes
 ) {}

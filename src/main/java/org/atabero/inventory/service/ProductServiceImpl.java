@@ -72,50 +72,15 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    @Transactional
-    public void deactivate(Long id) {
-        Product product = getByIdFull(id);
-
-        switch (product.getStatus()) {
-            case INACTIVE -> throw new ProductAlreadyDeactivatedException(product.getId());
-
-            case ACTIVE -> {
-                if (product.getCurrentStock() == 0) {
-                    product.setStatus(ProductStatus.INACTIVE);
-                    saveProduct(product);
-                } else {
-                    product.setStatus(ProductStatus.DISCONTINUED);
-                    saveProduct(product);
-                    throw new CannotInactivateProductWithStockException(
-                            "El producto tiene stock y no puede marcarse como INACTIVO. Se ha marcado como DESCONTINUADO."
-                    );
-                }
-            }
-
-            case DISCONTINUED -> {
-                if (product.getCurrentStock() == 0) {
-                    product.setStatus(ProductStatus.INACTIVE);
-                    saveProduct(product);
-                } else {
-                    throw new CannotInactivateProductWithStockException(
-                            "El producto ya está DESCONTINUADO y aún tiene stock. No puede marcarse como INACTIVO."
-                    );
-                }
-            }
-        }
-    }
-
-
-    @Override
-    @Transactional
-    public void activate(Long id) {
-        // Pendiente de implementación
-    }
-
-    @Override
     public Product getByIdFull(Long id) {
         return productRepository.findById(id)
                 .orElseThrow(() -> new ProductNotFoundException(id));
+    }
+
+    @Override
+    @Transactional
+    public void modifyStatus(Product product) {
+        saveProduct(product);
     }
 
     // 🔒 Helpers privados
