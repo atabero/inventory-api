@@ -1,4 +1,4 @@
-package org.atabero.inventory.exception;
+package org.atabero.inventory.exception.supplier;
 
 public class SupplierNotFoundException extends RuntimeException {
     public SupplierNotFoundException(String message) {

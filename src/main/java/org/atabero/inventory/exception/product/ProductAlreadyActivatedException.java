@@ -1,4 +1,4 @@
-package org.atabero.inventory.exception;
+package org.atabero.inventory.exception.product;
 
 public class ProductAlreadyActivatedException extends RuntimeException {
     public ProductAlreadyActivatedException(String message) {

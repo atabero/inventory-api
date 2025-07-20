@@ -1,4 +1,4 @@
-package org.atabero.inventory.exception;
+package org.atabero.inventory.exception.category;
 
 public class CategoryAlreadyActivatedException extends RuntimeException {
     public CategoryAlreadyActivatedException(String message) {

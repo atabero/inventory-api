@@ -1,4 +1,4 @@
-package org.atabero.inventory.exception;
+package org.atabero.inventory.exception.supplier;
 
 public class SupplierAlreadyActivatedException extends RuntimeException {
 
