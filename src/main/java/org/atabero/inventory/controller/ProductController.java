@@ -56,10 +56,5 @@ public class ProductController {
         );
     }
 
-    @PatchMapping("/{id}/deactivate")
-    public ResponseEntity<Void> deactivate(@PathVariable Long id) {
-        productService.deactivate(id);
-        return ResponseEntity.noContent().build();
-    }
 
 }
