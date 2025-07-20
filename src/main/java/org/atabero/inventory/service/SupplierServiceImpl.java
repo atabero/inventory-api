@@ -72,7 +72,8 @@ public class SupplierServiceImpl implements SupplierService {
         supplierRepository.save(supplier);
     }
 
-    private Supplier findByIdFull(Long id) {
+    @Override
+    public Supplier findByIdFull(Long id) {
         return supplierRepository.findById(id).orElseThrow(
                 () -> new SupplierNotFoundException(id)
         );

@@ -3,6 +3,7 @@ package org.atabero.inventory.service;
 import org.atabero.inventory.dto.category.CategoryResponseDTO;
 import org.atabero.inventory.dto.category.CreateCategoryDTO;
 import org.atabero.inventory.dto.category.UpdateCategoryDTO;
+import org.atabero.inventory.model.Category;
 
 import java.util.List;
 
@@ -51,4 +52,6 @@ public interface CategoryService {
     void deactivate(Long id);
 
     void activate(Long id);
+
+    Category findByIdFull(Long id);
 }

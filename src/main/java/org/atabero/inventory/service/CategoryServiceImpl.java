@@ -72,7 +72,8 @@ public class CategoryServiceImpl implements CategoryService {
         categoryRepository.save(category);
     }
 
-    private Category findByIdFull(Long id){
+    @Override
+    public Category findByIdFull(Long id){
         return categoryRepository.findById(id)
                 .orElseThrow(() -> new CategoryNotFoundException(id));
     }

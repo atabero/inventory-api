@@ -15,8 +15,8 @@ public record ProductResponseDTO(
         BigDecimal price,
         Integer currentStock,
         ProductStatus status,
-        Category category,
-        Supplier supplier,
+        String nameCategory,
+        String NameSupplier,
         LocalDateTime createdDate,
         LocalDateTime lastModifiedDate
 ) {}

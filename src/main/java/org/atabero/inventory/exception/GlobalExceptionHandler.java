@@ -14,12 +14,7 @@ import java.util.stream.Collectors;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(CategoryNotFoundException.class)
-    public ResponseEntity<ApiError> handleCategoryNotFound(CategoryNotFoundException ex, HttpServletRequest request) {
-        ApiError apiError = createApiError(HttpStatus.NOT_FOUND, "Categoría no encontrada", ex.getMessage(), request);
-        return ResponseEntity.status(apiError.getStatus()).body(apiError);
-    }
-
+    // Genericas
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiError> handleValidationException(MethodArgumentNotValidException ex, HttpServletRequest request) {
@@ -32,8 +27,6 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(apiError.getStatus()).body(apiError);
     }
 
-
-
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiError> handleGenericException(Exception ex, HttpServletRequest request) {
         ApiError apiError = new ApiError(
@@ -44,6 +37,13 @@ public class GlobalExceptionHandler {
                 request.getRequestURI(),
                 null
         );
+        return ResponseEntity.status(apiError.getStatus()).body(apiError);
+    }
+    // Categoria
+
+    @ExceptionHandler(CategoryNotFoundException.class)
+    public ResponseEntity<ApiError> handleCategoryNotFound(CategoryNotFoundException ex, HttpServletRequest request) {
+        ApiError apiError = createApiError(HttpStatus.NOT_FOUND, "Categoría no encontrada", ex.getMessage(), request);
         return ResponseEntity.status(apiError.getStatus()).body(apiError);
     }
 
@@ -68,6 +68,49 @@ public class GlobalExceptionHandler {
         );
         return ResponseEntity.status(apiError.getStatus()).body(apiError);
     }
+
+    // Productos
+
+    @ExceptionHandler(ProductNotFoundException.class)
+    public ResponseEntity<ApiError> handleProductNotFound(ProductNotFoundException ex, HttpServletRequest request) {
+        ApiError apiError = createApiError(HttpStatus.NOT_FOUND, "Producto no encontrado", ex.getMessage(), request);
+        return ResponseEntity.status(apiError.getStatus()).body(apiError);
+    }
+
+    @ExceptionHandler(ProductAlreadyDeactivatedException.class)
+    public ResponseEntity<ApiError> handleProductAlreadyDeactivated(ProductAlreadyDeactivatedException ex, HttpServletRequest request){
+        ApiError apiError = createApiError(
+                HttpStatus.CONFLICT,
+                "El producto no puede ser desactivado con stock disponible",
+                ex.getMessage(),
+                request
+        );
+        return ResponseEntity.status(apiError.getStatus()).body(apiError);
+    }
+
+    @ExceptionHandler(ProductAlreadyActivatedException.class)
+    public ResponseEntity<ApiError> handleProductAlreadyActivated(ProductAlreadyActivatedException ex, HttpServletRequest request){
+        ApiError apiError = createApiError(
+                HttpStatus.CONFLICT,
+                "El producto ya está activada",
+                ex.getMessage(),
+                request
+        );
+        return ResponseEntity.status(apiError.getStatus()).body(apiError);
+    }
+
+    @ExceptionHandler(CannotInactivateProductWithStockException.class)
+    public ResponseEntity<ApiError> handleCannotInactivateProductWithStock(CannotInactivateProductWithStockException ex, HttpServletRequest request){
+        ApiError apiError = createApiError(
+                HttpStatus.CONFLICT,
+                "El producto sufrio un conflicto",
+                ex.getMessage(),
+                request
+        );
+        return ResponseEntity.status(apiError.getStatus()).body(apiError);
+    }
+
+    // provedores
 
     @ExceptionHandler(SupplierNotFoundException.class)
     public ResponseEntity<ApiError> handleSupplierNotFound(SupplierNotFoundException ex, HttpServletRequest request) {
@@ -98,6 +141,7 @@ public class GlobalExceptionHandler {
     }
 
 
+    // creacion de api Error
     private ApiError createApiError(HttpStatus status, String error, String message, HttpServletRequest request) {
         return new ApiError(
                 LocalDateTime.now(),
