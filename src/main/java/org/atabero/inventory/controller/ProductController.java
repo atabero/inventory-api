@@ -42,6 +42,13 @@ public class ProductController {
         );
     }
 
+    @PostMapping("/all")
+    public ResponseEntity<List<ProductResponseDTO>> create(@RequestBody @Valid List<CreateProductDTO> dtos) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(
+                productService.create(dtos)
+        );
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<ProductResponseDTO> update(@PathVariable Long id, @RequestBody @Valid UpdateProductDTO dto) {
         return ResponseEntity.ok(

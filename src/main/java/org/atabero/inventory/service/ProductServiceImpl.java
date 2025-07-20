@@ -48,6 +48,13 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public List<ProductResponseDTO> create(List<CreateProductDTO> dtos) {
+        return dtos.stream().map(
+                this::create
+        ).toList();
+    }
+
+    @Override
     public ProductResponseDTO update(Long id, UpdateProductDTO dto) {
         Product product = getByIdFull(id);
         Category category = resolveCategory(product, dto.getIdCategory());

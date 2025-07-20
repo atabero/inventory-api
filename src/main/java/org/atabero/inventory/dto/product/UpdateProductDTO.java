@@ -3,7 +3,6 @@ package org.atabero.inventory.dto.product;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Size;
 import lombok.*;
-import org.atabero.inventory.model.enums.MovementType;
 
 import java.math.BigDecimal;
 

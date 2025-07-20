@@ -1,9 +1,6 @@
 package org.atabero.inventory.dto.product;
 
-import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -30,20 +27,20 @@ public class CreateProductDTO {
     private String description;
 
     // Validación para el precio
-    @NotBlank(message = "El precio no puede ser nulo")
+    @NotNull(message = "El precio no puede ser nulo")
     @DecimalMin(value = "0.01", message = "El precio debe ser mayor que cero")
     private BigDecimal price;
 
     // Validación para el stock
-    @NotBlank(message = "El stock no puede ser nulo")
+    @NotNull(message = "El stock no puede ser nulo")
     @Min(value = 0, message = "El stock no puede ser negativo")
     private Integer currentStock;
 
     // Validación para la categoría
-    @NotBlank(message = "La categoría no puede ser nula")
+    @NotNull(message = "La categoría no puede ser nula")
     private Long idCategory;
 
     // Validación para el proveedor
-    @NotBlank(message = "El proveedor no puede ser nulo")
+    @NotNull(message = "El proveedor no puede ser nulo")
     private Long supplier;
 }
