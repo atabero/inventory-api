@@ -13,6 +13,7 @@ import org.atabero.inventory.model.Category;
 import org.atabero.inventory.model.enums.CategoryStatus;
 import org.atabero.inventory.repository.CategoryRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -24,6 +25,7 @@ public class CategoryServiceImpl implements CategoryService {
 
 
     @Override
+    @Transactional(readOnly = true)
     public List<CategoryResponseDTO> findAll() {
         return categoryRepository.findAll().stream()
                 .map(
@@ -32,12 +34,14 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public CategoryResponseDTO findById(Long id) {
         Category category = findByIdFull(id);
         return MapperCategory.toResponse(category);
     }
 
     @Override
+    @Transactional
     public CategoryResponseDTO create(CreateCategoryDTO dto) {
         Category category = MapperCategory.toEntity(dto);
         category = categoryRepository.save(category);
@@ -45,6 +49,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    @Transactional
     public CategoryResponseDTO update(Long id, UpdateCategoryDTO dto) {
         Category category = findByIdFull(id);
         MapperCategory.toUpdateCategory(dto,category);
@@ -53,6 +58,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    @Transactional
     public void deactivate(Long id) {
         Category category = findByIdFull(id);
         if (category.getStatus() == CategoryStatus.INACTIVE){
@@ -63,6 +69,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    @Transactional
     public void activate(Long id) {
         Category category = findByIdFull(id);
         if (category.getStatus() == CategoryStatus.ACTIVE) {
@@ -73,6 +80,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Category findByIdFull(Long id){
         return categoryRepository.findById(id)
                 .orElseThrow(() -> new CategoryNotFoundException(id));

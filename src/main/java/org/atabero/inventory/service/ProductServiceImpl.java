@@ -14,6 +14,7 @@ import org.atabero.inventory.model.Supplier;
 import org.atabero.inventory.model.enums.ProductStatus;
 import org.atabero.inventory.repository.ProductRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
@@ -27,6 +28,7 @@ public class ProductServiceImpl implements ProductService {
     private final SupplierService supplierService;
 
     @Override
+    @Transactional(readOnly = true)
     public List<ProductResponseDTO> getAll() {
         return productRepository.findAll().stream()
                 .map(MapperProduct::toResponse)
@@ -34,11 +36,13 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public ProductResponseDTO getById(Long id) {
         return MapperProduct.toResponse(getByIdFull(id));
     }
 
     @Override
+    @Transactional
     public ProductResponseDTO create(CreateProductDTO dto) {
         Category category = categoryService.findByIdFull(dto.getIdCategory());
         Supplier supplier = supplierService.findByIdFull(dto.getSupplier());
@@ -48,6 +52,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Transactional
     public List<ProductResponseDTO> create(List<CreateProductDTO> dtos) {
         return dtos.stream().map(
                 this::create
@@ -55,6 +60,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Transactional
     public ProductResponseDTO update(Long id, UpdateProductDTO dto) {
         Product product = getByIdFull(id);
         Category category = resolveCategory(product, dto.getIdCategory());
@@ -66,6 +72,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Transactional
     public void deactivate(Long id) {
         Product product = getByIdFull(id);
 
@@ -100,6 +107,7 @@ public class ProductServiceImpl implements ProductService {
 
 
     @Override
+    @Transactional
     public void activate(Long id) {
         // Pendiente de implementación
     }

@@ -12,6 +12,7 @@ import org.atabero.inventory.model.Supplier;
 import org.atabero.inventory.model.enums.SupplierStatus;
 import org.atabero.inventory.repository.SupplierRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -22,6 +23,7 @@ public class SupplierServiceImpl implements SupplierService {
     private final SupplierRepository supplierRepository;
 
     @Override
+    @Transactional(readOnly = true)
     public List<SupplierResponseDTO> findAll() {
         return supplierRepository
                 .findAll()
@@ -32,12 +34,14 @@ public class SupplierServiceImpl implements SupplierService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public SupplierResponseDTO findById(Long id) {
         Supplier supplier = findByIdFull(id);
         return MapperSupplier.toResponse(supplier);
     }
 
     @Override
+    @Transactional
     public SupplierResponseDTO create(CreateSupplierDTO dto) {
         Supplier supplier = MapperSupplier.toEntity(dto);
         supplier = supplierRepository.save(supplier);
@@ -45,6 +49,7 @@ public class SupplierServiceImpl implements SupplierService {
     }
 
     @Override
+    @Transactional
     public SupplierResponseDTO update(Long id, UpdateSupplierDTO dto) {
         Supplier supplier = findByIdFull(id);
         MapperSupplier.updateSupplier(dto, supplier);
@@ -53,6 +58,7 @@ public class SupplierServiceImpl implements SupplierService {
     }
 
     @Override
+    @Transactional
     public void deactivate(Long id) {
         Supplier supplier = findByIdFull(id);
         if (supplier.getStatus() == SupplierStatus.INACTIVE) {
@@ -63,6 +69,7 @@ public class SupplierServiceImpl implements SupplierService {
     }
 
     @Override
+    @Transactional
     public void activate(Long id) {
         Supplier supplier = findByIdFull(id);
         if (supplier.getStatus() == SupplierStatus.ACTIVE) {
@@ -73,6 +80,7 @@ public class SupplierServiceImpl implements SupplierService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Supplier findByIdFull(Long id) {
         return supplierRepository.findById(id).orElseThrow(
                 () -> new SupplierNotFoundException(id)
