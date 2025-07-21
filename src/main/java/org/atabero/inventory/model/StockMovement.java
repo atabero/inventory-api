@@ -27,7 +27,7 @@ public class StockMovement implements Serializable {
     private UUID id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id", nullable = false)
+    @JoinColumn(name = "product_id")
     private Product product;
 
     @Column(nullable = false)
@@ -37,14 +37,18 @@ public class StockMovement implements Serializable {
     @Column(nullable = false)
     private MovementType movementType;
 
+    private String notes;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private OperationStatus operationStatus;
+    @Column(length = 500)
+    private String operationMessage;
 
     @Column(nullable = false)
     private LocalDateTime timestamp;
 
-    private String notes;
+
 
     @PrePersist
     public void prePersist() {
