@@ -83,6 +83,11 @@ public class ProductServiceImpl implements ProductService {
         saveProduct(product);
     }
 
+    @Override
+    public void modifyStock(Product product) {
+        saveProduct(product);
+    }
+
     // 🔒 Helpers privados
 
     private void saveProduct(Product product) {

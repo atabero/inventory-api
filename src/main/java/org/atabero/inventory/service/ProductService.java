@@ -16,4 +16,5 @@ public interface ProductService {
     ProductResponseDTO update(Long id, UpdateProductDTO dto);
     Product getByIdFull(Long id);
     void modifyStatus(Product product);
+    void modifyStock(Product product);
 }
