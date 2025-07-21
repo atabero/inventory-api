@@ -1,9 +1,15 @@
 package org.atabero.inventory.dto.stockmovement;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.atabero.inventory.model.enums.MovementType;
+import org.atabero.inventory.model.enums.OperationStatus;
+
+import java.time.LocalDateTime;
 
 @Builder
 @Getter
@@ -20,4 +26,14 @@ public class CreateStockMovementDTO {
     private Integer amount;
 
     private String notes;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private OperationStatus operationStatus;
+
+    @Column(length = 500)
+    private String operationMessage;
+
+    @Column(nullable = false)
+    private LocalDateTime changedAt;
 }

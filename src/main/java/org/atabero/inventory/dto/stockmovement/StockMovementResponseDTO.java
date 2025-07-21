@@ -11,6 +11,8 @@ public record StockMovementResponseDTO(
         Long idProduct,
         String productName,
         Integer quantityChange,
+        Integer previousQuantity,
+        Integer newQuantity,
         MovementType movementType,
         OperationStatus operationStatus,
         LocalDateTime timestamp,
