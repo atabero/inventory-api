@@ -1,4 +1,4 @@
-package org.atabero.inventory.exception;
+package org.atabero.inventory.exception.stockmovemen;
 
 public class InsufficientStockException extends RuntimeException {
     public InsufficientStockException(String message) {

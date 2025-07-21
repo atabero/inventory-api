@@ -8,8 +8,10 @@ import org.atabero.inventory.exception.category.CategoryNotFoundException;
 import org.atabero.inventory.util.ApiErrorUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+@ControllerAdvice
 public class categoryExceptionHandler {
 
     @ExceptionHandler(CategoryNotFoundException.class)

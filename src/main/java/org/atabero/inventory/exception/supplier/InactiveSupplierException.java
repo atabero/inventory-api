@@ -1,4 +1,7 @@
 package org.atabero.inventory.exception.supplier;
 
-public class InactiveSupplierException {
+public class InactiveSupplierException extends RuntimeException {
+    public InactiveSupplierException(String message) {
+        super(message);
+    }
 }

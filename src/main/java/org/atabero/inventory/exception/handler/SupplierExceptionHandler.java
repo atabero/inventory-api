@@ -9,8 +9,10 @@ import org.atabero.inventory.exception.supplier.SupplierNotFoundException;
 import org.atabero.inventory.util.ApiErrorUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+@ControllerAdvice
 public class SupplierExceptionHandler {
 
     @ExceptionHandler(SupplierNotFoundException.class)
