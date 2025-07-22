@@ -1,6 +1,5 @@
 package org.atabero.inventory.service;
 
-
 import lombok.RequiredArgsConstructor;
 import org.atabero.inventory.dto.stockmovement.CreateStockMovementDTO;
 import org.atabero.inventory.dto.stockmovement.StockMovementResponseDTO;
@@ -13,22 +12,17 @@ import org.atabero.inventory.model.Product;
 import org.atabero.inventory.model.StockMovement;
 import org.atabero.inventory.model.enums.MovementType;
 import org.atabero.inventory.model.enums.OperationStatus;
-import org.atabero.inventory.model.enums.ProductStatus;
 import org.atabero.inventory.model.enums.SupplierStatus;
 import org.atabero.inventory.repository.StockMovementRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
-// TODO crear todos los metodos
-
 @Service
 @RequiredArgsConstructor
-public class StockMovementServiceImpl implements StockMovementService{
+public class StockMovementServiceImpl implements StockMovementService {
 
     private final StockMovementRepository repository;
     private final ProductService productService;
-
 
     @Override
     @Transactional
@@ -37,122 +31,109 @@ public class StockMovementServiceImpl implements StockMovementService{
         try {
             product = productService.getByIdFull(dto.getIdProduct());
         } catch (ProductNotFoundException e) {
-            // Creacion de StockMovement
-            StockMovement stockMovement = createStockMovement(null, dto, movementType, OperationStatus.ERROR, e.getMessage());
-            save(stockMovement);
+            StockMovement stockMovement = buildStockMovement(null, dto, movementType, OperationStatus.ERROR, e.getMessage());
+            saveStockMovement(stockMovement);
             throw new ProductNotFoundException(dto.getIdProduct());
         }
 
-
-        // Si es salida y no hay stock suficiente, lanzar excepción
         if (!movementType.isEntry() && (product.getCurrentStock() - dto.getAmount()) < 0) {
-            // Creacion de StockMovement
             String message = "No hay stock suficiente para realizar el movimiento: " +
                     "Stock actual = " + product.getCurrentStock() +
                     ", solicitado = " + dto.getAmount();
-            StockMovement stockMovement = createStockMovement(product, dto, movementType, OperationStatus.ERROR, message);
-            save(stockMovement);
-            throw new InsufficientStockException(
-                    message
-            );
+            StockMovement stockMovement = buildStockMovement(product, dto, movementType, OperationStatus.ERROR, message);
+            saveStockMovement(stockMovement);
+            throw new InsufficientStockException(message);
         }
 
         return switch (movementType) {
-            case PURCHASE -> handlePurchase(dto, product,movementType);
-            case RETURN -> handleReturn(dto, product,movementType);
-            case ADJUSTMENT_POSITIVE -> handleAdjustmentPositive(dto, product,movementType);
-            case MANUAL_ENTRY -> handleManualEntry(dto, product,movementType);
-            case SALE -> handleSale(dto, product,movementType);
-            case BREAKAGE -> handleBreakage(dto, product,movementType);
-            case LOSS -> handleLoss(dto, product,movementType);
-            case ADJUSTMENT_NEGATIVE -> handleAdjustmentNegative(dto, product,movementType);
-            case MANUAL_EXIT -> handleManualExit(dto, product,movementType);
+            case PURCHASE -> processStockPurchase(dto, product, movementType);
+            case RETURN -> processStockReturn(dto, product, movementType);
+            case ADJUSTMENT_POSITIVE -> processPositiveStockAdjustment(dto, product, movementType);
+            case MANUAL_ENTRY -> processManualStockEntry(dto, product, movementType);
+            case SALE -> processStockSale(dto, product, movementType);
+            case BREAKAGE -> processStockBreakage(dto, product, movementType);
+            case LOSS -> processStockLoss(dto, product, movementType);
+            case ADJUSTMENT_NEGATIVE -> processNegativeStockAdjustment(dto, product, movementType);
+            case MANUAL_EXIT -> processManualStockExit(dto, product, movementType);
         };
     }
 
-    private StockMovementResponseDTO handlePurchase(CreateStockMovementDTO dto, Product product ,MovementType type) {
-        validateStockMovementBeforeProcessing(product,dto,type);
-        StockMovement movement = createStockMovement(
-                product,dto,type,OperationStatus.SUCCESS,"Se proceso el stock de la compra"
-        );
-        save(movement);
+    private StockMovementResponseDTO processStockPurchase(CreateStockMovementDTO dto, Product product, MovementType type) {
+        validateStockMovementPreconditions(product, dto, type);
+        StockMovement movement = buildStockMovement(product, dto, type, OperationStatus.SUCCESS, "Se procesó el stock de la compra");
+        saveStockMovement(movement);
         Integer previousQuantity = product.getCurrentStock();
-        Integer newQuantity  = previousQuantity + dto.getAmount();
+        Integer newQuantity = previousQuantity + dto.getAmount();
         product.setCurrentStock(newQuantity);
         productService.modifyStock(product);
-        return createMovementAndUpdateStock(movement, previousQuantity,newQuantity);
+        return createMovementAndUpdateStock(movement, previousQuantity, newQuantity);
     }
 
-
-
-    private StockMovementResponseDTO handleReturn(CreateStockMovementDTO dto, Product product,MovementType type) {
-        validateStockMovementBeforeProcessing(product,dto,type);
+    private StockMovementResponseDTO processStockReturn(CreateStockMovementDTO dto, Product product, MovementType type) {
+        validateStockMovementPreconditions(product, dto, type);
         return null;
     }
 
-    private StockMovementResponseDTO handleAdjustmentPositive(CreateStockMovementDTO dto, Product product,MovementType type) {
+    private StockMovementResponseDTO processPositiveStockAdjustment(CreateStockMovementDTO dto, Product product, MovementType type) {
         return null;
     }
 
-    private StockMovementResponseDTO handleManualEntry(CreateStockMovementDTO dto, Product product,MovementType type) {
-        return null;
-
-    }
-
-    private StockMovementResponseDTO handleSale(CreateStockMovementDTO dto, Product product,MovementType type) {
+    private StockMovementResponseDTO processManualStockEntry(CreateStockMovementDTO dto, Product product, MovementType type) {
         return null;
     }
 
-    private StockMovementResponseDTO handleBreakage(CreateStockMovementDTO dto, Product product,MovementType type) {
+    private StockMovementResponseDTO processStockSale(CreateStockMovementDTO dto, Product product, MovementType type) {
         return null;
     }
 
-    private StockMovementResponseDTO handleLoss(CreateStockMovementDTO dto, Product product,MovementType type) {
+    private StockMovementResponseDTO processStockBreakage(CreateStockMovementDTO dto, Product product, MovementType type) {
         return null;
     }
 
-    private StockMovementResponseDTO handleAdjustmentNegative(CreateStockMovementDTO dto, Product product,MovementType type) {
+    private StockMovementResponseDTO processStockLoss(CreateStockMovementDTO dto, Product product, MovementType type) {
         return null;
     }
 
-    private StockMovementResponseDTO handleManualExit(CreateStockMovementDTO dto, Product product,MovementType type) {
+    private StockMovementResponseDTO processNegativeStockAdjustment(CreateStockMovementDTO dto, Product product, MovementType type) {
+        return null;
+    }
+
+    private StockMovementResponseDTO processManualStockExit(CreateStockMovementDTO dto, Product product, MovementType type) {
         return null;
     }
 
     private StockMovementResponseDTO createMovementAndUpdateStock(StockMovement movement, Integer previousQuantity, Integer newQuantity) {
-        return MapperStockMovement.toResponse(movement,previousQuantity,newQuantity);
+        return MapperStockMovement.toResponse(movement, previousQuantity, newQuantity);
     }
 
     // * VALIDATIONS
-    private void checkStockAvailability(Product product, CreateStockMovementDTO dto, MovementType movementType) {
+    private void validateStockAvailability(Product product, CreateStockMovementDTO dto, MovementType movementType) {
         switch (product.getStatus()) {
             case DISCONTINUED, BLOCKED, UNAVAILABLE -> {
                 String message = "No se puede reponer stock";
-                StockMovement stockMovement = createStockMovement(product, dto, movementType, OperationStatus.ERROR, message);
-                save(stockMovement);
+                StockMovement stockMovement = buildStockMovement(product, dto, movementType, OperationStatus.ERROR, message);
+                saveStockMovement(stockMovement);
                 throw new StockReplenishmentNotAllowedException(message);
             }
         }
     }
 
-    private void validateSupplierStatus(Product product, CreateStockMovementDTO dto, MovementType movementType) {
+    private void validateSupplierStatusBeforeStockMovement(Product product, CreateStockMovementDTO dto, MovementType movementType) {
         if (product.getSupplier().getStatus() == SupplierStatus.INACTIVE) {
-            String message = "El proveedor está inactivo y no se puede registrar una entrada de stock para este producto."; 
-            StockMovement stockMovement = createStockMovement(product, dto, movementType, OperationStatus.ERROR, message);
-            save(stockMovement);
+            String message = "El proveedor está inactivo y no se puede registrar una entrada de stock para este producto.";
+            StockMovement stockMovement = buildStockMovement(product, dto, movementType, OperationStatus.ERROR, message);
+            saveStockMovement(stockMovement);
             throw new InactiveSupplierException(message);
         }
     }
 
-    private void validateStockMovementBeforeProcessing(Product product, CreateStockMovementDTO dto, MovementType type) {
-        validateSupplierStatus(product, dto, type);
-        checkStockAvailability(product, dto, type);
+    private void validateStockMovementPreconditions(Product product, CreateStockMovementDTO dto, MovementType type) {
+        validateSupplierStatusBeforeStockMovement(product, dto, type);
+        validateStockAvailability(product, dto, type);
     }
 
-
-
-    // * CREACION
-    private StockMovement createStockMovement(Product product, CreateStockMovementDTO dto, MovementType movementType, OperationStatus status, String message) {
+    // * CREATION
+    private StockMovement buildStockMovement(Product product, CreateStockMovementDTO dto, MovementType movementType, OperationStatus status, String message) {
         return StockMovement.builder()
                 .product(product)
                 .quantityChange(dto.getAmount())
@@ -164,9 +145,7 @@ public class StockMovementServiceImpl implements StockMovementService{
     }
 
     // * REPOSITORY
-
-    private void save(StockMovement stockMovement){
+    private void saveStockMovement(StockMovement stockMovement) {
         repository.save(stockMovement);
     }
-
 }
