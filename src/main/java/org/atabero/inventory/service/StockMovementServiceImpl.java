@@ -71,8 +71,8 @@ public class StockMovementServiceImpl implements StockMovementService{
     }
 
     private StockMovementResponseDTO handlePurchase(CreateStockMovementDTO dto, Product product ,MovementType type) {
-        supplierValid(product.getSupplier().getStatus(), product, dto, type, OperationStatus.ERROR);
-        esStockable(product.getStatus(), product, dto, type, OperationStatus.ERROR);
+        supplierValid( product, dto, type);
+        esStockable( product, dto, type);
         StockMovement movement = createStockMovement(
                 product,dto,type,OperationStatus.SUCCESS,"Se proceso el stock de la compra"
         );
@@ -86,7 +86,7 @@ public class StockMovementServiceImpl implements StockMovementService{
 
 
     private StockMovementResponseDTO handleReturn(CreateStockMovementDTO dto, Product product,MovementType type) {
-
+        esStockable(product,dto,type);
         return null;
     }
 
@@ -123,21 +123,21 @@ public class StockMovementServiceImpl implements StockMovementService{
     }
 
     // * COMPROBACIONES
-    private void esStockable(ProductStatus status, Product product, CreateStockMovementDTO dto, MovementType movementType, OperationStatus operationStatus) {
-        switch (status) {
+    private void esStockable(Product product, CreateStockMovementDTO dto, MovementType movementType) {
+        switch (product.getStatus()) {
             case DISCONTINUED, BLOCKED, UNAVAILABLE -> {
                 String message = "No se puede reponer stock";
-                StockMovement stockMovement = createStockMovement(product, dto, movementType, operationStatus, message);
+                StockMovement stockMovement = createStockMovement(product, dto, movementType, OperationStatus.ERROR, message);
                 save(stockMovement);
                 throw new StockReplenishmentNotAllowedException(message);
             }
         }
     }
 
-    private void supplierValid(SupplierStatus status, Product product, CreateStockMovementDTO dto, MovementType movementType, OperationStatus operationStatus) {
-        if (status == SupplierStatus.INACTIVE) {
+    private void supplierValid( Product product, CreateStockMovementDTO dto, MovementType movementType) {
+        if (product.getSupplier().getStatus() == SupplierStatus.INACTIVE) {
             String message = "El proveedor está inactivo y no se puede registrar una entrada de stock para este producto.";
-            StockMovement stockMovement = createStockMovement(product, dto, movementType, operationStatus, message);
+            StockMovement stockMovement = createStockMovement(product, dto, movementType, OperationStatus.ERROR, message);
             save(stockMovement);
             throw new InactiveSupplierException(message);
         }
