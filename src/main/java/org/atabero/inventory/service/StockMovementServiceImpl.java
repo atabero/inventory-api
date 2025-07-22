@@ -71,8 +71,7 @@ public class StockMovementServiceImpl implements StockMovementService{
     }
 
     private StockMovementResponseDTO handlePurchase(CreateStockMovementDTO dto, Product product ,MovementType type) {
-        supplierValid( product, dto, type);
-        esStockable( product, dto, type);
+        validateStockMovementBeforeProcessing(product,dto,type);
         StockMovement movement = createStockMovement(
                 product,dto,type,OperationStatus.SUCCESS,"Se proceso el stock de la compra"
         );
@@ -85,8 +84,9 @@ public class StockMovementServiceImpl implements StockMovementService{
     }
 
 
+
     private StockMovementResponseDTO handleReturn(CreateStockMovementDTO dto, Product product,MovementType type) {
-        esStockable(product,dto,type);
+        validateStockMovementBeforeProcessing(product,dto,type);
         return null;
     }
 
@@ -96,6 +96,7 @@ public class StockMovementServiceImpl implements StockMovementService{
 
     private StockMovementResponseDTO handleManualEntry(CreateStockMovementDTO dto, Product product,MovementType type) {
         return null;
+
     }
 
     private StockMovementResponseDTO handleSale(CreateStockMovementDTO dto, Product product,MovementType type) {
@@ -122,8 +123,8 @@ public class StockMovementServiceImpl implements StockMovementService{
         return MapperStockMovement.toResponse(movement,previousQuantity,newQuantity);
     }
 
-    // * COMPROBACIONES
-    private void esStockable(Product product, CreateStockMovementDTO dto, MovementType movementType) {
+    // * VALIDATIONS
+    private void checkStockAvailability(Product product, CreateStockMovementDTO dto, MovementType movementType) {
         switch (product.getStatus()) {
             case DISCONTINUED, BLOCKED, UNAVAILABLE -> {
                 String message = "No se puede reponer stock";
@@ -134,14 +135,21 @@ public class StockMovementServiceImpl implements StockMovementService{
         }
     }
 
-    private void supplierValid( Product product, CreateStockMovementDTO dto, MovementType movementType) {
+    private void validateSupplierStatus(Product product, CreateStockMovementDTO dto, MovementType movementType) {
         if (product.getSupplier().getStatus() == SupplierStatus.INACTIVE) {
-            String message = "El proveedor está inactivo y no se puede registrar una entrada de stock para este producto.";
+            String message = "El proveedor está inactivo y no se puede registrar una entrada de stock para este producto."; 
             StockMovement stockMovement = createStockMovement(product, dto, movementType, OperationStatus.ERROR, message);
             save(stockMovement);
             throw new InactiveSupplierException(message);
         }
     }
+
+    private void validateStockMovementBeforeProcessing(Product product, CreateStockMovementDTO dto, MovementType type) {
+        validateSupplierStatus(product, dto, type);
+        checkStockAvailability(product, dto, type);
+    }
+
+
 
     // * CREACION
     private StockMovement createStockMovement(Product product, CreateStockMovementDTO dto, MovementType movementType, OperationStatus status, String message) {
