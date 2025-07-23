@@ -9,26 +9,21 @@ import org.atabero.inventory.model.enums.SupplierStatus;
 import java.util.Objects;
 
 /**
- * Clase utilitaria para mapear entre entidades {@link Supplier} y sus DTOs
- * correspondientes: {@link CreateSupplierDTO}, {@link SupplierResponseDTO},
- * y {@link UpdateSupplierDTO}.
- * <p>
- * Esta clase no debe ser instanciada.
+ * Clase utilitaria para convertir entre entidades Supplier
+ * y sus respectivos DTOs.
  */
 public class MapperSupplier {
 
-    /**
-     * Constructor privado para prevenir la instanciación de esta clase utilitaria.
-     */
+    // Constructor privado para evitar instanciación
     private MapperSupplier() {
     }
 
     /**
-     * Convierte un {@link CreateSupplierDTO} en una entidad {@link Supplier}.
-     * Si la información de contacto es nula o vacía, se asigna el valor "No Aplica".
+     * Convierte un DTO de creación en una entidad Supplier.
+     * Si la información de contacto es nula o vacía, se asigna "No Aplica".
      *
-     * @param dto el DTO de creación del proveedor
-     * @return una nueva instancia de {@link Supplier} basada en el DTO
+     * @param dto DTO con los datos para crear un proveedor.
+     * @return La entidad Supplier creada.
      */
     public static Supplier toEntity(CreateSupplierDTO dto) {
         String contactInfo = "No Aplica";
@@ -44,10 +39,10 @@ public class MapperSupplier {
     }
 
     /**
-     * Convierte una entidad {@link Supplier} en un {@link SupplierResponseDTO}.
+     * Convierte una entidad Supplier en su DTO de respuesta.
      *
-     * @param supplier la entidad de proveedor a convertir
-     * @return un DTO con los datos del proveedor
+     * @param supplier Entidad Supplier a convertir.
+     * @return DTO con los datos del proveedor.
      */
     public static SupplierResponseDTO toResponse(Supplier supplier) {
         return new SupplierResponseDTO(
@@ -57,11 +52,11 @@ public class MapperSupplier {
     }
 
     /**
-     * Actualiza una entidad {@link Supplier} con los datos proporcionados en
-     * un {@link UpdateSupplierDTO}, solo si los valores son distintos a los actuales.
+     * Actualiza los datos de un Supplier a partir de un DTO de actualización,
+     * modificando solo los campos que difieren.
      *
-     * @param dto      el DTO con los datos actualizados
-     * @param supplier la entidad de proveedor a modificar
+     * @param dto      DTO con los datos actualizados.
+     * @param supplier Entidad Supplier a actualizar.
      */
     public static void updateSupplier(UpdateSupplierDTO dto, Supplier supplier) {
         if (dto.getName() != null && !Objects.equals(supplier.getName(), dto.getName())) {
