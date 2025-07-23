@@ -33,6 +33,9 @@ public class StockMovement implements Serializable {
     @Column(nullable = false)
     private Integer quantityChange;
 
+    private Integer previousQuantity;
+    private Integer newQuantity;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private MovementType movementType;
