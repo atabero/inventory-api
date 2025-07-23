@@ -10,81 +10,69 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Repositorio de acceso a datos de los proveedores en el sistema de inventario.
- * Esta interfaz extiende {@link JpaRepository} y proporciona operaciones de búsqueda personalizadas
- * sobre los proveedores, incluyendo búsquedas por nombre, estado y combinaciones de estos,
- * con soporte para paginación y ordenación.
+ * Repositorio para acceder y gestionar entidades {@link Supplier}.
+ * Proporciona métodos personalizados para buscar proveedores según distintos criterios.
  */
 public interface SupplierRepository extends JpaRepository<Supplier, Long> {
 
-    // --- Búsquedas por Atributos Directos ---
-
     /**
-     * Busca un proveedor por su nombre único.
-     * Este método devuelve un {@link Optional} que contendrá el proveedor si se encuentra,
-     * o estará vacío si no existe un proveedor con ese nombre.
+     * Busca un proveedor por su nombre exacto.
      *
-     * @param name El nombre del proveedor.
-     * @return Un {@link Optional<Supplier>} con el proveedor encontrado, o {@link Optional#empty()} si no existe.
+     * @param name nombre del proveedor.
+     * @return un {@link Optional} que contiene el proveedor si existe.
      */
     Optional<Supplier> findByName(String name);
 
     /**
-     * Busca proveedores cuyo nombre contenga una cadena dada, sin importar mayúsculas o minúsculas.
-     * Este tipo de búsqueda es útil para realizar búsquedas parciales o tipo "Google".
+     * Busca proveedores cuyo nombre contenga el texto indicado, sin distinguir mayúsculas.
      *
-     * @param name La cadena a buscar en los nombres de los proveedores.
-     * @return Una lista de proveedores cuyos nombres contienen la cadena proporcionada.
+     * @param name parte del nombre a buscar.
+     * @return lista de proveedores que coinciden parcialmente con el nombre.
      */
     List<Supplier> findByNameContainingIgnoreCase(String name);
 
     /**
-     * Busca proveedores por su estado (ACTIVO, INACTIVO, etc.).
+     * Busca proveedores por su estado.
      *
-     * @param status El estado del proveedor (por ejemplo, {@link SupplierStatus#ACTIVE}, {@link SupplierStatus#INACTIVE}).
-     * @return Una lista de proveedores con el estado especificado.
+     * @param status estado del proveedor ({@link SupplierStatus}).
+     * @return lista de proveedores con el estado indicado.
      */
     List<Supplier> findByStatus(SupplierStatus status);
 
-    // --- Búsquedas Combinadas ---
-
     /**
-     * Busca proveedores cuyo nombre contenga una cadena dada y cuyo estado coincida con el proporcionado.
+     * Busca proveedores por nombre parcial y estado.
      *
-     * @param name El nombre (o parte del nombre) del proveedor.
-     * @param status El estado del proveedor (ACTIVO, INACTIVO, etc.).
-     * @return Una lista de proveedores que coinciden con los criterios dados.
+     * @param name   parte del nombre a buscar.
+     * @param status estado del proveedor.
+     * @return lista de proveedores que coincidan con ambos criterios.
      */
     List<Supplier> findByNameContainingIgnoreCaseAndStatus(String name, SupplierStatus status);
 
-    // --- Paginación y Ordenación (Importante para listados grandes) ---
-
     /**
-     * Busca proveedores cuyo nombre contenga una cadena dada, con soporte para paginación y ordenación.
+     * Devuelve una página de proveedores cuyo nombre contenga el texto indicado.
      *
-     * @param name La cadena a buscar en los nombres de los proveedores.
-     * @param pageable El objeto que contiene los parámetros de paginación y ordenación.
-     * @return Una página de proveedores cuyos nombres contienen la cadena proporcionada, con paginación y ordenación.
+     * @param name     parte del nombre a buscar.
+     * @param pageable objeto para paginación.
+     * @return página de proveedores.
      */
     Page<Supplier> findByNameContainingIgnoreCase(String name, Pageable pageable);
 
     /**
-     * Busca proveedores cuyo estado coincida con el estado proporcionado, con soporte para paginación y ordenación.
+     * Devuelve una página de proveedores con el estado especificado.
      *
-     * @param status El estado del proveedor (por ejemplo, ACTIVO, INACTIVO).
-     * @param pageable El objeto que contiene los parámetros de paginación y ordenación.
-     * @return Una página de proveedores con el estado especificado, con paginación y ordenación.
+     * @param status   estado del proveedor.
+     * @param pageable objeto para paginación.
+     * @return página de proveedores.
      */
     Page<Supplier> findByStatus(SupplierStatus status, Pageable pageable);
 
     /**
-     * Busca proveedores cuyo nombre contenga una cadena dada y cuyo estado coincida con el proporcionado,
-     * con soporte para paginación y ordenación.
+     * Devuelve una página de proveedores cuyo nombre contenga el texto indicado y tengan un estado específico.
      *
-     * @param name El nombre (o parte del nombre) del proveedor.
-     * @param status El estado del proveedor (ACTIVO, INACTIVO).
-     * @param pageable El objeto que contiene los parámetros de paginación y ordenación.
-     * @return Una página de proveedores que coinciden con los criterios dados, con paginación y ordenación.
+     * @param name     parte del nombre a buscar.
+     * @param status   estado del proveedor.
+     * @param pageable objeto para paginación.
+     * @return página de proveedores que coincidan con los filtros.
      */
     Page<Supplier> findByNameContainingIgnoreCaseAndStatus(String name, SupplierStatus status, Pageable pageable);
 }
