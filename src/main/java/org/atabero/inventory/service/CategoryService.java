@@ -7,51 +7,67 @@ import org.atabero.inventory.model.Category;
 
 import java.util.List;
 
-
 /**
- * Interfaz para la gestión de categorías del inventario.
+ * Servicio para manejar las operaciones relacionadas con las categorías.
  */
 public interface CategoryService {
 
     /**
-     * Obtiene todas las categorías activas.
+     * Obtiene la lista completa de categorías.
      *
-     * @return lista de categorías
+     * @return lista de objetos {@link CategoryResponseDTO} con la información de todas las categorías activas.
      */
     List<CategoryResponseDTO> findAll();
 
     /**
-     * Busca una categoría por su ID.
+     * Busca una categoría por su identificador.
      *
-     * @param id identificador de la categoría
-     * @return DTO de respuesta de la categoría
+     * @param id identificador único de la categoría.
+     * @return un objeto {@link CategoryResponseDTO} con la información de la categoría encontrada.
+     * @throws RuntimeException si la categoría no existe.
      */
     CategoryResponseDTO findById(Long id);
 
     /**
-     * Crea una nueva categoría.
+     * Crea una nueva categoría con la información proporcionada.
      *
-     * @param dto datos de creación
-     * @return DTO de la categoría creada
+     * @param dto objeto {@link CreateCategoryDTO} con los datos para crear la categoría.
+     * @return un objeto {@link CategoryResponseDTO} con la información de la categoría creada.
      */
     CategoryResponseDTO create(CreateCategoryDTO dto);
 
     /**
-     * Actualiza una categoría existente.
+     * Actualiza una categoría existente con los datos proporcionados.
      *
-     * @param dto datos de actualización
-     * @return DTO actualizado
+     * @param id  identificador único de la categoría a actualizar.
+     * @param dto objeto {@link UpdateCategoryDTO} con los datos para actualizar la categoría.
+     * @return un objeto {@link CategoryResponseDTO} con la información actualizada de la categoría.
+     * @throws RuntimeException si la categoría no existe.
      */
     CategoryResponseDTO update(Long id, UpdateCategoryDTO dto);
 
     /**
-     * Desactiva (soft delete) una categoría por su ID.
+     * Desactiva una categoría, dejándola inactiva en el sistema.
      *
-     * @param id identificador de la categoría
+     * @param id identificador único de la categoría a desactivar.
+     * @throws RuntimeException si la categoría no existe.
      */
     void deactivate(Long id);
 
+    /**
+     * Activa una categoría previamente desactivada.
+     *
+     * @param id identificador único de la categoría a activar.
+     * @throws RuntimeException si la categoría no existe.
+     */
     void activate(Long id);
 
+    /**
+     * Busca una categoría por su identificador y devuelve la entidad completa.
+     *
+     * @param id identificador único de la categoría.
+     * @return la entidad {@link Category} completa de la categoría encontrada.
+     * @throws RuntimeException si la categoría no existe.
+     */
     Category findByIdFull(Long id);
 }
