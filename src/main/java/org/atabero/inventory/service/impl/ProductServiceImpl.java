@@ -1,18 +1,18 @@
-package org.atabero.inventory.service;
+package org.atabero.inventory.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.atabero.inventory.dto.product.CreateProductDTO;
 import org.atabero.inventory.dto.product.ProductResponseDTO;
 import org.atabero.inventory.dto.product.UpdateProductDTO;
-import org.atabero.inventory.exception.product.CannotInactivateProductWithStockException;
-import org.atabero.inventory.exception.product.ProductAlreadyDeactivatedException;
 import org.atabero.inventory.exception.product.ProductNotFoundException;
 import org.atabero.inventory.mapper.MapperProduct;
 import org.atabero.inventory.model.Category;
 import org.atabero.inventory.model.Product;
 import org.atabero.inventory.model.Supplier;
-import org.atabero.inventory.model.enums.ProductStatus;
 import org.atabero.inventory.repository.ProductRepository;
+import org.atabero.inventory.service.CategoryService;
+import org.atabero.inventory.service.ProductService;
+import org.atabero.inventory.service.SupplierService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

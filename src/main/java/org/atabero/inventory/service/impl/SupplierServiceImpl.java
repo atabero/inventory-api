@@ -1,4 +1,4 @@
-package org.atabero.inventory.service;
+package org.atabero.inventory.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.atabero.inventory.dto.supplier.CreateSupplierDTO;
@@ -11,6 +11,7 @@ import org.atabero.inventory.mapper.MapperSupplier;
 import org.atabero.inventory.model.Supplier;
 import org.atabero.inventory.model.enums.SupplierStatus;
 import org.atabero.inventory.repository.SupplierRepository;
+import org.atabero.inventory.service.SupplierService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

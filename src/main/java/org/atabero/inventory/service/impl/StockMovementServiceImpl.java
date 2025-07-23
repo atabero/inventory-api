@@ -1,4 +1,4 @@
-package org.atabero.inventory.service;
+package org.atabero.inventory.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.atabero.inventory.dto.stockmovement.CreateStockMovementDTO;
@@ -14,6 +14,8 @@ import org.atabero.inventory.model.enums.MovementType;
 import org.atabero.inventory.model.enums.OperationStatus;
 import org.atabero.inventory.model.enums.SupplierStatus;
 import org.atabero.inventory.repository.StockMovementRepository;
+import org.atabero.inventory.service.ProductService;
+import org.atabero.inventory.service.StockMovementService;
 import org.atabero.inventory.util.StockInfo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

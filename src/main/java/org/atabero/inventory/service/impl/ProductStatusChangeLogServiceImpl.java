@@ -1,4 +1,4 @@
-package org.atabero.inventory.service;
+package org.atabero.inventory.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.atabero.inventory.dto.productstatuschangelog.CreateProductStatusChangeLogDTO;
@@ -11,6 +11,8 @@ import org.atabero.inventory.model.ProductStatusChangeLog;
 import org.atabero.inventory.model.enums.OperationStatus;
 import org.atabero.inventory.model.enums.ProductStatus;
 import org.atabero.inventory.repository.ProductStatusChangeLogRepository;
+import org.atabero.inventory.service.ProductService;
+import org.atabero.inventory.service.ProductStatusChangeLogService;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;

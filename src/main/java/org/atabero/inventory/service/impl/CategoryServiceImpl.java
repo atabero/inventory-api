@@ -1,4 +1,4 @@
-package org.atabero.inventory.service;
+package org.atabero.inventory.service.impl;
 
 
 import lombok.RequiredArgsConstructor;
@@ -12,6 +12,7 @@ import org.atabero.inventory.mapper.MapperCategory;
 import org.atabero.inventory.model.Category;
 import org.atabero.inventory.model.enums.CategoryStatus;
 import org.atabero.inventory.repository.CategoryRepository;
+import org.atabero.inventory.service.CategoryService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
